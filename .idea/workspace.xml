@@ -4,18 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edfadf38-1e90-4c19-9a4a-2a657c59ecd4" name="Changes" comment="add tkinter example and as a mvc base">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logic/DBSetupWorker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="edfadf38-1e90-4c19-9a4a-2a657c59ecd4" name="Changes" comment="add test views">
+      <change afterPath="$PROJECT_DIR$/Config.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logic/DBAccessWorker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nameundifined/undifined.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App.py" beforeDir="false" afterPath="$PROJECT_DIR$/App.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/Controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/race-time-tracker.iml" beforeDir="false" afterPath="$PROJECT_DIR$/race-time-tracker.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/View.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/DBSetupWorker.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/DBSetupWorker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/mainwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/view/mainwindow.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/ui_mainwindow.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,20 +53,23 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "/home/lite/IdeaProjects/race-time-tracker",
+    "last_opened_file_path": "/home/lite/IdeaProjects/race-time-tracker/logic",
     "project.structure.last.edited": "Artifacts",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.25555557",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+    "settings.editor.selected.configurable": "editor.reader.mode"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/logic" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/view" />
       <recent name="$PROJECT_DIR$/logic" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.App">
     <configuration name="App" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="race-time-tracker" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -91,6 +91,32 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="ui_mainwindow" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="race-time-tracker" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/view" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/view/ui_mainwindow.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.ui_mainwindow" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -143,7 +169,21 @@
       <option name="project" value="LOCAL" />
       <updated>1654807017590</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="test sqlite3 and signal concept">
+      <created>1687809245062</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1687809245062</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add test views">
+      <created>1687809334364</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1687809334364</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -174,23 +214,9 @@
     <MESSAGE value="update .gitignore" />
     <MESSAGE value="set up main for test" />
     <MESSAGE value="add tkinter example and as a mvc base" />
-    <option name="LAST_COMMIT_MESSAGE" value="add tkinter example and as a mvc base" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/App.py</url>
-          <line>57</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/logic/DBSetupWorker.py</url>
-          <line>20</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="test sqlite3 and signal concept" />
+    <MESSAGE value="add test views" />
+    <option name="LAST_COMMIT_MESSAGE" value="add test views" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
