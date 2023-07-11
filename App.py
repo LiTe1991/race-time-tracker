@@ -1,3 +1,7 @@
+"""
+Main class which open a main menu to navigate to other windows
+"""
+
 import sys
 
 from PySide6.QtCore import QThreadPool, Qt
@@ -45,6 +49,7 @@ class MainWindow(QMainWindow):
         self.proc.close()
 
     def open_settings_window(self):
+        """Open the settings window"""
         if self.window is None:
             self.window = SettingsWindow()
             self.window.show()
@@ -53,6 +58,7 @@ class MainWindow(QMainWindow):
             self.window = None
 
     def open_race_window(self):
+        """Open the race window"""
         if self.window is None:
             self.window = RaceWindow()
             self.window.show()
