@@ -4,7 +4,7 @@ from PySide6.QtCore import QThreadPool, Qt
 from PySide6.QtWidgets import QApplication, QMainWindow, QProgressDialog, QPushButton
 
 from logic.dataaccess.DBSetupWorker import DBSetupWorker
-from view.ui_mainwindow import Ui_MainWindow
+from view.MainwindowView import UiMainWindow
 from logic.Settings import SettingsWindow
 from logic.Race import RaceWindow
 
@@ -12,8 +12,8 @@ from logic.Race import RaceWindow
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        self.ui = UiMainWindow()
+        self.ui.setup_ui(self)
 
         self.threadpool = QThreadPool()
         self.threadpool.setMaxThreadCount(1)

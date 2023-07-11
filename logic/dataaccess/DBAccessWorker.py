@@ -1,8 +1,7 @@
-import time, configparser
+import configparser
 
 from pysqlcipher3 import dbapi2 as sqlite3
 from pathlib import Path
-from PySide6.QtCore import QRunnable, Slot, Signal, QObject
 
 
 class DBAccess:

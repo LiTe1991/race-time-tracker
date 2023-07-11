@@ -1,8 +1,9 @@
-import time, configparser
-
-from pysqlcipher3 import dbapi2 as sqlite3
+import configparser
+import time
 from pathlib import Path
+
 from PySide6.QtCore import QRunnable, Slot, Signal, QObject
+from pysqlcipher3 import dbapi2 as sqlite3
 
 
 class DBSetupWorkerSignal(QObject):
