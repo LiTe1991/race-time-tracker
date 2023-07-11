@@ -1,11 +1,12 @@
 import sys
 
 from PySide6.QtCore import QThreadPool, Qt
-from PySide6.QtWidgets import QApplication, QMainWindow, QProgressDialog, QPushButton
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QProgressDialog, QPushButton
 
 from logic.DBSetupWorker import DBSetupWorker
 from logic.DBAccessWorker import DBAccess
 from view.ui_mainwindow import Ui_MainWindow
+from view.ui_settings import Ui_Settings
 
 
 class MainWindow(QMainWindow):
@@ -30,9 +31,8 @@ class MainWindow(QMainWindow):
         db_worker.signals.finished.connect(self.db_init_done)
         self.threadpool.start(db_worker)
 
-        db_worker2 = DBAccess()
-        t = db_worker2.get_all_drivers()
-        print(t)
+        self.window = None
+        self.ui.pushButton_3.clicked.connect(self.open_settings_window)
 
     def db_init_process(self, act, maxi):
         print("Step " + str(act) + " of " + str(maxi) + " done")
@@ -42,6 +42,21 @@ class MainWindow(QMainWindow):
     def db_init_done(self, message):
         print(str(message))
         self.proc.close()
+
+    def open_settings_window(self):
+        if self.window is None:
+            self.window = SettingsWindow()
+            self.window.show()
+        else:
+            self.window.close()
+            self.window = None
+
+
+class SettingsWindow(QWidget):
+    def __init__(self):
+        super(SettingsWindow, self).__init__()
+        self.ui = Ui_Settings()
+        self.ui.setupUi(self)
 
 
 if __name__ == '__main__':

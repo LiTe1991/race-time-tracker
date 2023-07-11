@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edfadf38-1e90-4c19-9a4a-2a657c59ecd4" name="Changes" comment="add test views">
-      <change afterPath="$PROJECT_DIR$/Config.ini" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logic/DBAccessWorker.py" afterDir="false" />
+    <list default="true" id="edfadf38-1e90-4c19-9a4a-2a657c59ecd4" name="Changes" comment="cleanup code and impl first idea of data access">
       <change afterPath="$PROJECT_DIR$/nameundifined/undifined.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App.py" beforeDir="false" afterPath="$PROJECT_DIR$/App.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/DBSetupWorker.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic/DBSetupWorker.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/view/mainwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/view/mainwindow.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/ui_mainwindow.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,23 +40,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "/home/lite/IdeaProjects/race-time-tracker/logic",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.25555557",
-    "settings.editor.selected.configurable": "editor.reader.mode"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/lite/IdeaProjects/race-time-tracker/logic&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.25555557&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.reader.mode&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/logic" />
@@ -183,7 +180,14 @@
       <option name="project" value="LOCAL" />
       <updated>1687809334364</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="cleanup code and impl first idea of data access">
+      <created>1688019110618</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1688019110618</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -216,7 +220,8 @@
     <MESSAGE value="add tkinter example and as a mvc base" />
     <MESSAGE value="test sqlite3 and signal concept" />
     <MESSAGE value="add test views" />
-    <option name="LAST_COMMIT_MESSAGE" value="add test views" />
+    <MESSAGE value="cleanup code and impl first idea of data access" />
+    <option name="LAST_COMMIT_MESSAGE" value="cleanup code and impl first idea of data access" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
