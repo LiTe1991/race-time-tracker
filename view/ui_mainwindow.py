@@ -22,7 +22,12 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(275, 438)
+        MainWindow.resize(400, 600)
+        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
+        MainWindow.setSizePolicy(sizePolicy)
         icon = QIcon()
         icon.addFile(u"../../../../Bilder/coffee.jpg", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -31,29 +36,35 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.pushButton = QPushButton(self.centralwidget)
-        self.pushButton.setObjectName(u"pushButton")
-        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
-        self.pushButton.setSizePolicy(sizePolicy)
+        self.button_start = QPushButton(self.centralwidget)
+        self.button_start.setObjectName(u"button_start")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.button_start.sizePolicy().hasHeightForWidth())
+        self.button_start.setSizePolicy(sizePolicy1)
+        font = QFont()
+        font.setPointSize(12)
+        self.button_start.setFont(font)
 
-        self.verticalLayout.addWidget(self.pushButton)
+        self.verticalLayout.addWidget(self.button_start)
 
-        self.pushButton_2 = QPushButton(self.centralwidget)
-        self.pushButton_2.setObjectName(u"pushButton_2")
-        sizePolicy.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
-        self.pushButton_2.setSizePolicy(sizePolicy)
+        self.button_hitory = QPushButton(self.centralwidget)
+        self.button_hitory.setObjectName(u"button_hitory")
+        self.button_hitory.setEnabled(False)
+        sizePolicy1.setHeightForWidth(self.button_hitory.sizePolicy().hasHeightForWidth())
+        self.button_hitory.setSizePolicy(sizePolicy1)
+        self.button_hitory.setFont(font)
 
-        self.verticalLayout.addWidget(self.pushButton_2)
+        self.verticalLayout.addWidget(self.button_hitory)
 
-        self.pushButton_3 = QPushButton(self.centralwidget)
-        self.pushButton_3.setObjectName(u"pushButton_3")
-        sizePolicy.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
-        self.pushButton_3.setSizePolicy(sizePolicy)
+        self.button_settings = QPushButton(self.centralwidget)
+        self.button_settings.setObjectName(u"button_settings")
+        sizePolicy1.setHeightForWidth(self.button_settings.sizePolicy().hasHeightForWidth())
+        self.button_settings.setSizePolicy(sizePolicy1)
+        self.button_settings.setFont(font)
 
-        self.verticalLayout.addWidget(self.pushButton_3)
+        self.verticalLayout.addWidget(self.button_settings)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -64,8 +75,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"RaceTracker", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Start", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"History", None))
-        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"Einstellungen", None))
+        self.button_start.setText(QCoreApplication.translate("MainWindow", u"Start", None))
+        self.button_hitory.setText(QCoreApplication.translate("MainWindow", u"History", None))
+        self.button_settings.setText(QCoreApplication.translate("MainWindow", u"Einstellungen", None))
     # retranslateUi
 

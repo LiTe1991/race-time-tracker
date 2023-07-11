@@ -1,12 +1,11 @@
-import datetime
 import sys
 # import RPi.GPIO as GPIO
 # import pigpio
 
-from PySide6.QtCore import QThreadPool, QTimer, Qt
+from PySide6.QtCore import QThreadPool, Qt
 from PySide6.QtWidgets import QApplication, QMainWindow, QProgressDialog, QPushButton
 
-from logic.DBSetupWorker import DBSetupWorker
+from logic.dataaccess.DBSetupWorker import DBSetupWorker
 from view.ui_mainwindow import Ui_MainWindow
 
 

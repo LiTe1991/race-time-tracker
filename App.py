@@ -1,12 +1,12 @@
 import sys
 
 from PySide6.QtCore import QThreadPool, Qt
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QProgressDialog, QPushButton
+from PySide6.QtWidgets import QApplication, QMainWindow, QProgressDialog, QPushButton
 
-from logic.DBSetupWorker import DBSetupWorker
-from logic.DBAccessWorker import DBAccess
+from logic.dataaccess.DBSetupWorker import DBSetupWorker
 from view.ui_mainwindow import Ui_MainWindow
-from view.ui_settings import Ui_Settings
+from logic.Settings import SettingsWindow
+from logic.Race import RaceWindow
 
 
 class MainWindow(QMainWindow):
@@ -32,7 +32,8 @@ class MainWindow(QMainWindow):
         self.threadpool.start(db_worker)
 
         self.window = None
-        self.ui.pushButton_3.clicked.connect(self.open_settings_window)
+        self.ui.button_start.clicked.connect(self.open_race_window)
+        self.ui.button_settings.clicked.connect(self.open_settings_window)
 
     def db_init_process(self, act, maxi):
         print("Step " + str(act) + " of " + str(maxi) + " done")
@@ -51,12 +52,13 @@ class MainWindow(QMainWindow):
             self.window.close()
             self.window = None
 
-
-class SettingsWindow(QWidget):
-    def __init__(self):
-        super(SettingsWindow, self).__init__()
-        self.ui = Ui_Settings()
-        self.ui.setupUi(self)
+    def open_race_window(self):
+        if self.window is None:
+            self.window = RaceWindow()
+            self.window.show()
+        else:
+            self.window.close()
+            self.window = None
 
 
 if __name__ == '__main__':
