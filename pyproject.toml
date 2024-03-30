@@ -1,13 +1,15 @@
 [project]
 name = "race-time-tracker"
-readme = "README.md"
-requires-python = ">= 3.12"
+version = "1.0.0"
 dependencies = [
     "PySide6"
 ]
+requires-python = ">= 3.12"
 authors = [
     { name = "LiTe", email = "test@example.com" }
 ]
+description = "Test"
+readme = "README.md"
 
 [tool.pylint.MASTER]
 ignore = ["RaceView.py"]
