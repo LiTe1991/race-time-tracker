@@ -1,5 +1,5 @@
 [project]
-name = "Race Time Tracker"
+name = "race-time-tracker"
 readme = "README.md"
 requires-python = ">= 3.12"
 dependencies = [
