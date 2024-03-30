@@ -1,0 +1,18 @@
+[project]
+name = "Race Time Tracker"
+readme = "README.md"
+requires-python = ">= 3.12"
+dependencies = [
+    "PySide6"
+]
+authors = [
+    { name = "LiTe", email = "test@example.com" }
+]
+
+[tool.pylint.MASTER]
+ignore = ["RaceView.py"]
+
+[tool.pylint."MESSAGES CONTROL"]
+disable=[
+  'no-name-in-module'
+]

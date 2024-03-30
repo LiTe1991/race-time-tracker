@@ -1,79 +1,86 @@
-# pylint: skip-file
-
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'test.ui'
+## Form generated from reading UI file 'RaceView.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.1
+## Created by: Qt User Interface Compiler version 6.6.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
-from PySide6.QtGui import (QFont, QIcon)
-from PySide6.QtWidgets import (QGridLayout, QLabel, QListView, QPushButton, QSizePolicy, QWidget)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QGridLayout, QLabel, QMainWindow,
+    QPushButton, QSizePolicy, QWidget)
 
-
-class UiMainWindow(object):
-    def setup_ui(self, main_window):
-        if not main_window.objectName():
-            main_window.setObjectName(u"MainWindow")
-        main_window.resize(1920, 1080)
-        size_policy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
-        size_policy.setHorizontalStretch(0)
-        size_policy.setVerticalStretch(0)
-        size_policy.setHeightForWidth(main_window.sizePolicy().hasHeightForWidth())
-        main_window.setSizePolicy(size_policy)
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        if not MainWindow.objectName():
+            MainWindow.setObjectName(u"MainWindow")
+        MainWindow.resize(1920, 1080)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
+        MainWindow.setSizePolicy(sizePolicy)
         icon = QIcon()
         icon.addFile(u"../../Bilder/Backgrounds/1080p_m4_liberty_2.jpg", QSize(), QIcon.Normal, QIcon.Off)
-        main_window.setWindowIcon(icon)
-        main_window.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        self.centralwidget = QWidget(main_window)
+        MainWindow.setWindowIcon(icon)
+        MainWindow.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.testTime = QLabel(self.centralwidget)
-        self.testTime.setObjectName(u"testTime")
+        self.timeLabel = QLabel(self.centralwidget)
+        self.timeLabel.setObjectName(u"timeLabel")
         font = QFont()
-        font.setPointSize(120)
+        font.setFamilies([u"Bahnschrift SemiLight"])
+        font.setPointSize(180)
         font.setBold(True)
-        self.testTime.setFont(font)
-        self.testTime.setAlignment(Qt.AlignCenter)
+        self.timeLabel.setFont(font)
+        self.timeLabel.setAlignment(Qt.AlignCenter)
 
-        self.gridLayout.addWidget(self.testTime, 0, 0, 1, 2)
+        self.gridLayout.addWidget(self.timeLabel, 0, 1, 1, 2)
 
-        self.start = QPushButton(self.centralwidget)
-        self.start.setObjectName(u"start")
+        self.actionButton = QPushButton(self.centralwidget)
+        self.actionButton.setObjectName(u"actionButton")
+        font1 = QFont()
+        font1.setPointSize(20)
+        self.actionButton.setFont(font1)
 
-        self.gridLayout.addWidget(self.start, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.actionButton, 1, 1, 1, 2)
 
-        self.stop = QPushButton(self.centralwidget)
-        self.stop.setObjectName(u"stop")
+        self.test = QPushButton(self.centralwidget)
+        self.test.setObjectName(u"test")
+        self.test.setEnabled(False)
+        sizePolicy.setHeightForWidth(self.test.sizePolicy().hasHeightForWidth())
+        self.test.setSizePolicy(sizePolicy)
+        font2 = QFont()
+        font2.setPointSize(20)
+        font2.setKerning(False)
+        self.test.setFont(font2)
+        self.test.setAutoFillBackground(False)
+        self.test.setStyleSheet(u"background-color: rgba(255, 0, 0, 1);\n"
+"border: none;")
 
-        self.gridLayout.addWidget(self.stop, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.test, 1, 0, 1, 1)
 
-        self.listView = QListView(self.centralwidget)
-        self.listView.setObjectName(u"listView")
-        size_policy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
-        size_policy1.setHorizontalStretch(0)
-        size_policy1.setVerticalStretch(0)
-        size_policy1.setHeightForWidth(self.listView.sizePolicy().hasHeightForWidth())
-        self.listView.setSizePolicy(size_policy1)
+        MainWindow.setCentralWidget(self.centralwidget)
 
-        self.gridLayout.addWidget(self.listView, 0, 2, 1, 1)
+        self.retranslateUi(MainWindow)
 
-        main_window.setCentralWidget(self.centralwidget)
-
-        self.retranslateUi(main_window)
-
-        QMetaObject.connectSlotsByName(main_window)
+        QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
-    def retranslate_ui(self, main_window):
-        main_window.setWindowTitle(QCoreApplication.translate("MainWindow", u"Time Tracker", None))
-        self.testTime.setText(QCoreApplication.translate("MainWindow", u"00:00:00.000", None))
-        self.start.setText(QCoreApplication.translate("MainWindow", u"Start", None))
-        self.stop.setText(QCoreApplication.translate("MainWindow", u"Stop", None))
+    def retranslateUi(self, MainWindow):
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Time Tracker", None))
+        self.timeLabel.setText(QCoreApplication.translate("MainWindow", u"00:00:00.000", None))
+        self.actionButton.setText(QCoreApplication.translate("MainWindow", u"Ready", None))
+        self.test.setText("")
     # retranslateUi
 
