@@ -3,7 +3,6 @@
 """
 import datetime
 import sys
-import threading
 
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QApplication, QMainWindow
@@ -35,7 +34,8 @@ class MainWindow(QMainWindow):
         self.ui.actionButton.released.connect(self.trigger_timer_action)
         self.ui.actionButton.setChecked(self.button_is_checked)
 
-        self.gpio = MotionSensor(22, queue_len=10)  # Set the queue length trigger something like sensitivity
+        # Set the queue length trigger something like sensitivity
+        self.gpio = MotionSensor(22, queue_len=10)
         self.led = RGBLED(red=23, green=24, blue=25, initial_value=self.red_light)
 
     def trigger_timer_action(self):

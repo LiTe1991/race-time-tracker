@@ -12,13 +12,14 @@ authors = [
 description = "Timer tracker for racing"
 readme = "README.md"
 
+[tool.setuptools]
+py-modules = ["view"]
+
 [tool.pylint.MASTER]
 ignore = ["RaceView.py"]
+max-line-length=150
 
 [tool.pylint."MESSAGES CONTROL"]
 disable=[
   'no-name-in-module'
 ]
-
-[tool.setuptools]
-py-modules = ["view", "logic"]
