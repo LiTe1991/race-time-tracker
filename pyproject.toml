@@ -2,13 +2,14 @@
 name = "race-time-tracker"
 version = "1.0.0"
 dependencies = [
-    "PySide6"
+    "PySide6",
+    "gpiozero"
 ]
 requires-python = ">= 3.12"
 authors = [
     { name = "LiTe", email = "test@example.com" }
 ]
-description = "Test"
+description = "Timer tracker for racing"
 readme = "README.md"
 
 [tool.pylint.MASTER]
