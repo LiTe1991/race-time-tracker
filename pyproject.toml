@@ -19,3 +19,6 @@ ignore = ["RaceView.py"]
 disable=[
   'no-name-in-module'
 ]
+
+[tool.setuptools]
+py-modules = ["view", "logic"]
