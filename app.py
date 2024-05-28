@@ -1,16 +1,17 @@
 """
     The main application which is used during start proc etc.
 """
-import datetime
 import os
 import sys
 
-from PySide6.QtCore import QTimer, Slot
+from datetime import datetime, timezone
+
+from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QApplication, QMainWindow
 from gpiozero import MotionSensor, RGBLED
 
-import view.RaceView as raceView
-from test import Updater
+from view import RaceView as raceView
+from logic import race_timer
 
 
 class MainWindow(QMainWindow):
@@ -27,14 +28,12 @@ class MainWindow(QMainWindow):
     measured_round_times = []
 
     minimal_running_time_seconds = 30
+    rounds_to_drive = 3
 
     def __init__(self):
         super().__init__()
         self.ui = raceView.Ui_MainWindow()
         self.ui.setupUi(self)
-
-        #self.timer = QTimer()
-        #self.timer.timeout.connect(self.update_stopwatch_time)
 
         self.button_is_checked = False
         self.ui.actionButton.setCheckable(True)
@@ -43,8 +42,11 @@ class MainWindow(QMainWindow):
 
         # Updater and Timer
         self.actual_time = None
-        self.updater = Updater()
-        self.updater.worker.update_progress.latest_number.connect(self.update_number)
+        self.start_time = None
+        self.measured_round_times = []
+
+        self.updater = race_timer.Updater()
+        self.updater.worker.update_progress.measured_time.connect(self.update_number)
 
         # Set the queue length trigger something like sensitivity, value which we can increase to change behavior
         self.gpio = MotionSensor(22, queue_len=10)
@@ -57,7 +59,14 @@ class MainWindow(QMainWindow):
         if self.button_is_checked:
             self.ui.actionButton.setText(self.button_text_go)
             self.button_is_checked = False
-            #self.timer.stop()
+
+            # TODO: Stop logic to implement
+            self.updater.quit()
+            self.updater.wait()
+            self.start_time = None
+            self.actual_time = None
+            self.ui.timeLabel.setText('0:00:00:000000')
+
             self.led.value = self.red_light
             self.gpio.when_motion = None
         else:
@@ -70,60 +79,57 @@ class MainWindow(QMainWindow):
         """
             Trigger the action for timer, make timer ready or abort proc
         """
-        #if self.timer.isActive():
-        #    return
-
-        #self.start_time = datetime.datetime.now()
-        #print('Start time: ' + str(self.start_time))
         self.led.value = self.no_light
-        #self.timer.start(100)
 
+        self.start_time = datetime.now(timezone.utc)
+        self.actual_time = 0
 
         self.updater.start()
 
-        self.gpio.when_motion = self.trigger_stop_timer
-        #QTimer.singleShot(self.minimal_running_time_ms, self, self.test)
+        self.gpio.when_motion = self.take_round_of_finish_race
 
-    def test(self):
+    def take_round_of_finish_race(self):
         """
-            Add action to when_motion event of the motion sensor
-        """
-        self.gpio.when_motion = self.trigger_stop_timer
-
-    def trigger_stop_timer(self):
-        """
-            Test
+            Define the workflow to take round time or stop race.
         """
         if self.actual_time.total_seconds() < 10:
-            print("Not yeat")
+            print("Not yet")
             return
-        #if not self.timer.isActive():
-        #    return
 
-        print('Stop time')
-        #self.timer.stop()
-
-        self.updater.quit()
-        self.updater.wait()
+        if len(self.measured_round_times) == (self.rounds_to_drive - 1):
+            self.updater.quit()
+            self.updater.wait()
 
         accurate_mode = os.getenv("ACCURATE_MODE", "0")
         if accurate_mode.isdigit() and int(accurate_mode) == 1:
-            self.update_stopwatch_time()
+            print('Use ACCURATE_MODE')
+            self.update_stopwatch_time(datetime.now(timezone.utc))
 
-    def update_stopwatch_time(self):
+        self.measured_round_times.append(self.actual_time)
+        self.start_time = datetime.now(timezone.utc)
+        self.actual_time = None
+        self.ui.timeLabel.setText('0:00:00:000000')
+
+        if len(self.measured_round_times) == (self.rounds_to_drive - 1):
+            self.led.value = self.red_light
+
+        print(str(self.measured_round_times))
+        # TODO: After stop or in finale round switch light to red
+
+    def update_stopwatch_time(self, time: datetime):
         """
             Update the timer label and set actual measured time
         """
-        measured_time = datetime.datetime.now(datetime.timezone.utc) - self.updater.worker.start_time
-        print('Update:' + str(measured_time))
-        self.ui.timeLabel.setText(str(measured_time))
+        self.actual_time = time - self.start_time
+        self.ui.timeLabel.setText(str(self.actual_time))
 
-    # Changed pyqtSlot to Slot
-    @Slot(datetime.timedelta)
+    @Slot(datetime)
     def update_number(self, val):
-        self.actual_time = val
-        print("UPDATE NUMBER: ", val)
-        self.ui.timeLabel.setText(str(val))
+        """
+            Slot which receive the signal from timer worker.
+        :param val: The measured time.
+        """
+        self.update_stopwatch_time(val)
 
 
 if __name__ == '__main__':

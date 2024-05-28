@@ -13,7 +13,7 @@ description = "Timer tracker for racing"
 readme = "README.md"
 
 [tool.setuptools]
-py-modules = ["view"]
+ py-modules = ["view", "logic"]
 
 [tool.pylint.MASTER]
 ignore = ["RaceView.py"]

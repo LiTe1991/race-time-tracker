@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'RaceView.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.3
+## Created by: Qt User Interface Compiler version 6.7.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -31,7 +31,7 @@ class Ui_MainWindow(object):
         icon = QIcon()
         icon.addFile(u"../../Bilder/Backgrounds/1080p_m4_liberty_2.jpg", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
-        MainWindow.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        MainWindow.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -43,7 +43,7 @@ class Ui_MainWindow(object):
         font.setPointSize(180)
         font.setBold(True)
         self.timeLabel.setFont(font)
-        self.timeLabel.setAlignment(Qt.AlignCenter)
+        self.timeLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.gridLayout.addWidget(self.timeLabel, 0, 1, 1, 2)
 
@@ -79,7 +79,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Time Tracker", None))
-        self.timeLabel.setText(QCoreApplication.translate("MainWindow", u"00:00:00.000", None))
+        self.timeLabel.setText(QCoreApplication.translate("MainWindow", u"0:00:00.000000", None))
         self.actionButton.setText(QCoreApplication.translate("MainWindow", u"Ready", None))
         self.test.setText("")
     # retranslateUi
