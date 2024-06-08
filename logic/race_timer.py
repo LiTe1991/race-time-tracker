@@ -37,8 +37,7 @@ class Worker(QObject):
             Main function of worker to set timer and start this one.
         """
         print('Init worker')
-        #self.start_time = datetime.datetime.now(datetime.timezone.utc)
-        self.timer.setInterval(1000)
+        self.timer.setInterval(100)
         print('Connect timeout')
         self.timer.timeout.connect(self.post_time)
         print('Connect finished thread')

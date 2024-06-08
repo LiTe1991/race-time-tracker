@@ -18,6 +18,7 @@ readme = "README.md"
 [tool.pylint.MASTER]
 ignore = ["RaceView.py"]
 max-line-length=150
+max-attributes=10
 
 [tool.pylint."MESSAGES CONTROL"]
 disable=[
