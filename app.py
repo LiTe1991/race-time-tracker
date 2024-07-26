@@ -31,10 +31,10 @@ class MainWindow(QMainWindow):
         self.ui.actionButton.setChecked(self.button_is_checked)
 
         # Updater and Timer
-        self.actual_time = None  # TODO: Move properties to own class?
+        self.actual_time = None  # TODO: Move properties to own class? # pylint: disable=fixme
         self.start_time = None
         self.measured_round_times = []
-        self.rounds_to_drive = 1  # TODO: Set over input field
+        self.rounds_to_drive = 1  # TODO: Set over input field # pylint: disable=fixme
 
         self.updater = race_timer.Updater()
         self.updater.worker.update_progress.measured_time.connect(self.update_number)
@@ -95,7 +95,7 @@ class MainWindow(QMainWindow):
         if race_finished:
             self.stop_race_timer()
 
-        accurate_mode = os.getenv("ACCURATE_MODE", "0")  # TODO: Set over input field
+        accurate_mode = os.getenv("ACCURATE_MODE", "0")  # TODO: Set over input field # pylint: disable=fixme
         if accurate_mode.isdigit() and int(accurate_mode) == 1:
             print('Use ACCURATE_MODE')
             self.update_stopwatch_time(datetime.now(timezone.utc))
@@ -111,7 +111,8 @@ class MainWindow(QMainWindow):
 
         if race_finished:
             print("Race finished")
-            #self.show_result_window()  # TODO: Show final view with results and highlight best round
+            # TODO: Show final view with results and highlight best round # pylint: disable=fixme
+            #self.show_result_window()
 
     def stop_race_timer(self):
         """
