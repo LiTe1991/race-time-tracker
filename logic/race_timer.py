@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from PySide6.QtCore import QObject, Signal, QThread, QTimer
 
 
-class WorkerSignal(QObject):
+class WorkerSignal(QObject):  # pylint: disable=too-few-public-methods
     """
         Needed signal to inform ui about actual time.
     """
@@ -17,6 +17,7 @@ class Worker(QObject):
     """
         Contain the logic to start time and to measure time, also fire the event for ui update.
     """
+
     def __init__(self):
         QObject.__init__(self)
         self.update_progress = WorkerSignal()
@@ -26,11 +27,7 @@ class Worker(QObject):
         """
             Emit the actual time to signal.
         """
-        try:
-            self.update_progress.measured_time.emit(datetime.now(timezone.utc))
-        except:
-            print("Error, but just for testing...")
-            self.update_progress.measured_time.emit(datetime.min)
+        self.update_progress.measured_time.emit(datetime.now(timezone.utc))
 
     def main(self):
         """
@@ -43,17 +40,15 @@ class Worker(QObject):
         print('Connect finished thread')
         self.thread().finished.connect(self.timer.stop)
         print('Start timer')
-        try:
-            print('Test: ' + str(self.thread().objectName()))
-            self.timer.start()
-        except:
-            print("Error, but just for testing...")
+        print('Test: ' + str(self.thread().objectName()))
+        self.timer.start()
 
 
-class Updater(QThread):
+class Updater(QThread):  # pylint: disable=too-few-public-methods
     """
         Update which start the worker for time measure and move the thread.
     """
+
     def __init__(self):
         QThread.__init__(self)
 
