@@ -1,0 +1,26 @@
+[project]
+name = "race-time-tracker"
+version = "1.0.0"
+dependencies = [
+    "PySide6",
+    "gpiozero"
+]
+requires-python = ">= 3.12"
+authors = [
+    { name = "LiTe", email = "test@example.com" }
+]
+description = "Timer tracker for racing"
+readme = "README.md"
+
+[tool.setuptools]
+ py-modules = ["view", "logic"]
+
+[tool.pylint.MASTER]
+ignore = ["RaceView.py"]
+max-line-length=150
+max-attributes=10
+
+[tool.pylint."MESSAGES CONTROL"]
+disable=[
+  'no-name-in-module'
+]
