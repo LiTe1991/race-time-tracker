@@ -7,7 +7,6 @@ import sys
 from datetime import datetime, timezone
 
 from PySide6.QtCore import Slot
-from PySide6.QtGui import QTextFormat
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from gpiozero import MotionSensor, RGBLED
 
@@ -20,6 +19,7 @@ class MainWindow(QMainWindow):
     """
     Main Window contain logic for loading race ui and register actions for timer and gpios
     """
+
     def __init__(self):
         super().__init__()
         self.ui = raceView.Ui_MainWindow()
@@ -27,29 +27,21 @@ class MainWindow(QMainWindow):
 
         self.button_is_checked = False
         self.ui.actionButton.setCheckable(True)
-        #self.ui.actionButton.released.connect(self.trigger_timer_action)
-        self.ui.actionButton.released.connect(self.test)
+        self.ui.actionButton.released.connect(self.trigger_timer_action)
         self.ui.actionButton.setChecked(self.button_is_checked)
 
         # Updater and Timer
         self.actual_time = None  # TODO: Move properties to own class?
         self.start_time = None
         self.measured_round_times = []
-        self.rounds_to_drive = 3  # TODO: Set over input field
+        self.rounds_to_drive = 1  # TODO: Set over input field
 
         self.updater = race_timer.Updater()
         self.updater.worker.update_progress.measured_time.connect(self.update_number)
 
         self.gpio = MotionSensor(constants.MOTION_SENSOR_PIN, queue_len=constants.MOTION_SENSOR_QUEUE_LENGTH)
-        self.led = RGBLED(red=constants.LED_STRIP_RED_PIN, green=constants.LED_STRIP_GREEN_PIN, blue=constants.LED_STRIP_BLUE_PIN, initial_value=constants.LIGHT_RED)
-
-    def test(self):
-        msgBox = QMessageBox()
-        msgBox.setIcon(QMessageBox.NoIcon)
-        msgBox.setText("<h1>Trest1</h1></br><hr></br>Test2")
-        msgBox.setWindowTitle("Ergebnis")
-        msgBox.setStandardButtons(QMessageBox.Ok)
-        msgBox.exec()
+        self.led = RGBLED(red=constants.LED_STRIP_RED_PIN, green=constants.LED_STRIP_GREEN_PIN,
+                          blue=constants.LED_STRIP_BLUE_PIN, initial_value=constants.LIGHT_RED)
 
     def trigger_timer_action(self):
         """
@@ -116,7 +108,10 @@ class MainWindow(QMainWindow):
             self.bal(constants.BUTTON_TEXT_GO, False, constants.LIGHT_RED, None)
 
         print(str(self.measured_round_times))
-        # TODO: Show final view with results and highlight best round
+
+        if race_finished:
+            print("Race finished")
+            #self.show_result_window()  # TODO: Show final view with results and highlight best round
 
     def stop_race_timer(self):
         """
@@ -140,6 +135,23 @@ class MainWindow(QMainWindow):
         """
         self.actual_time = time - self.start_time
         self.ui.timeLabel.setText(str(self.actual_time))
+
+    def show_result_window(self):
+        """
+        Not working at the moment
+        """
+        tex = ""
+
+        for x in self.measured_round_times:
+            tex += "<h1>" + str(x) + "</h1></br>"
+
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.NoIcon)
+        msg_box.setWindowTitle("Ergebnis")
+        msg_box.setStandardButtons(QMessageBox.Ok)
+        msg_box.setText(tex)
+        res = msg_box.exec()
+        print(str(res))
 
     @Slot(datetime)
     def update_number(self, val):
