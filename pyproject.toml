@@ -1,5 +1,5 @@
 [project]
-name = "race-time-tracker"
+name = "RaceTimeTracker"
 version = "1.0.0"
 dependencies = [
     "PySide6",
