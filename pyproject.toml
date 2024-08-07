@@ -1,5 +1,5 @@
 [project]
-name = "race-time-tracker"
+name = "RaceTimeTracker"
 version = "1.0.0"
 dependencies = [
     "PySide6",
@@ -17,7 +17,7 @@ readme = "README.md"
 
 [tool.pylint.MASTER]
 ignore = ["RaceView.py"]
-max-line-length=150
+max-line-length=250
 max-attributes=10
 
 [tool.pylint."MESSAGES CONTROL"]
