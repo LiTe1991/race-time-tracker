@@ -1,7 +1,6 @@
 """
     The timer which measure time and notify ui to calculate time and update label.
 """
-import time
 from datetime import datetime, timezone
 
 from PySide6.QtCore import QObject, Signal, QThread, QTimer

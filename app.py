@@ -5,9 +5,9 @@ import sys
 
 from datetime import datetime, timezone
 
-from PySide6 import QtGui
 from PySide6.QtCore import Slot
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QInputDialog
+from PySide6.QtGui import QStandardItemModel, QStandardItem
+from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog
 
 from gpiozero import MotionSensor, RGBLED
 
@@ -41,7 +41,7 @@ class MainWindow(QMainWindow):
         self.ui.action_set_sensitivity.triggered.connect(self.show_sensitivity_input_dialog)
         self.ui.action_set_min_round_time.triggered.connect(self.show_min_round_time_input_dialog)
 
-        self.model = QtGui.QStandardItemModel()
+        self.model = QStandardItemModel()
         self.ui.listView.setModel(self.model)
 
         self.set_rounds_in_label()
@@ -81,6 +81,7 @@ class MainWindow(QMainWindow):
         self.stop_race_timer()
         self.race.reset_race()
         self.set_rounds_in_label()
+        self.model.clear()
         self.ui.timeLabel.setText(constants.LABEL_TIMER_DEFAULT)
 
     def trigger_start_timer(self):
@@ -106,15 +107,14 @@ class MainWindow(QMainWindow):
             print("Race finished")
             self.stop_race_timer()
             self.race.append_round_to_race()
+            self.add_round_time_to_list()
             self.switch_button_action(constants.BUTTON_TEXT_GO, False, constants.LIGHT_RED, None)
             print(str(self.race.measured_round_times))
             return
-            # TODO: Show final view with results and highlight best round # pylint: disable=fixme
-            # self.show_result_window()
 
         self.race.append_round_to_race()
         self.set_rounds_in_label()
-        self.model.appendRow(QtGui.QStandardItem(str(self.race.actual_time)))
+        self.add_round_time_to_list()
 
     def stop_race_timer(self):
         """
@@ -129,6 +129,12 @@ class MainWindow(QMainWindow):
         """
         self.ui.roundLabel.setText(constants.LABEL_ROUND_COUNTER.replace("{str}", str(self.race.actual_round)).replace("{end}", str(self.race.rounds_to_drive)))
 
+    def add_round_time_to_list(self):
+        """
+        Add last round time to list view
+        """
+        self.model.appendRow(QStandardItem(constants.LABEL_ROUND_TIME.replace("{rnd}", str(self.race.actual_round - 1)).replace("{time}", str(self.race.measured_round_times[len(self.race.measured_round_times) - 1]))))
+
     def update_stopwatch_time(self, time: datetime):
         """
             Test
@@ -136,23 +142,6 @@ class MainWindow(QMainWindow):
         """
         self.race.update_actual_time(time)
         self.ui.timeLabel.setText(str(self.race.actual_time))
-
-    def show_result_window(self):
-        """
-        Not working at the moment
-        """
-        tex = ""
-
-        for x in self.measured_round_times:
-            tex += "<h1>" + str(x) + "</h1></br>"
-
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.NoIcon)
-        msg_box.setWindowTitle("Ergebnis")
-        msg_box.setStandardButtons(QMessageBox.Ok)
-        msg_box.setText(tex)
-        res = msg_box.exec()
-        print(str(res))
 
     @Slot(datetime)
     def update_time(self, val):

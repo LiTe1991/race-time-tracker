@@ -1,6 +1,7 @@
 """
 A dataclass for the race
 """
+import datetime
 from dataclasses import dataclass, field
 from datetime import timedelta
 
@@ -11,8 +12,8 @@ class Race:
     Properties and methods for a race of a driver
     """
     measured_round_times: list[timedelta] = field(default_factory=list)
-    actual_time: timedelta | None = None
-    start_time: timedelta | None = None
+    actual_time: datetime.datetime | None = None
+    start_time: datetime.datetime | None = None
     actual_round: int = 0
     rounds_to_drive: int = 1
     min_round_time: int = 5  # Minimal round time before event is allowed, avoid event triggering during start
@@ -26,7 +27,7 @@ class Race:
         self.actual_time = None
         self.start_time = None
 
-    def set_time_values(self, start_time: timedelta, actual_time: timedelta):
+    def set_time_values(self, start_time: datetime, actual_time: datetime):
         """
         Set time values to desire values
         :param start_time: New value for class parameter start_time
@@ -35,7 +36,7 @@ class Race:
         self.start_time = start_time
         self.actual_time = actual_time
 
-    def update_actual_time(self, current_time: timedelta):
+    def update_actual_time(self, current_time: datetime):
         """
         Update the actual time, for that we subtract given time and start time.
         :param current_time: Time which is used as first value for subtraction
@@ -57,13 +58,13 @@ class Race:
         self.actual_round = self.actual_round + 1
         self.measured_round_times.append(self.calculate_time_from_measured_times())
 
-    def calculate_time_from_measured_times(self) -> timedelta:
+    def calculate_time_from_measured_times(self) -> datetime:
         """
         Calculate time from measured times or use actual time if measured time is empty
         :return: timedelta: calculated time
         """
         if len(self.measured_round_times) > 0:
-            calculated_time = self.actual_time - self.measured_round_times[len(self.measured_round_times) - 1]
+            calculated_time = self.actual_time - sum(self.measured_round_times, datetime.timedelta())
         else:
             calculated_time = self.actual_time
 
