@@ -66,18 +66,18 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.timeLabel, 0, 3, 1, 1)
 
-        self.listView = QListView(self.centralwidget)
-        self.listView.setObjectName(u"listView")
+        self.roundList = QListView(self.centralwidget)
+        self.roundList.setObjectName(u"roundList")
         sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.listView.sizePolicy().hasHeightForWidth())
-        self.listView.setSizePolicy(sizePolicy3)
+        sizePolicy3.setHeightForWidth(self.roundList.sizePolicy().hasHeightForWidth())
+        self.roundList.setSizePolicy(sizePolicy3)
         font1 = QFont()
         font1.setPointSize(13)
-        self.listView.setFont(font1)
+        self.roundList.setFont(font1)
 
-        self.gridLayout.addWidget(self.listView, 0, 0, 1, 3)
+        self.gridLayout.addWidget(self.roundList, 0, 0, 1, 3)
 
         self.roundLabel = QLabel(self.centralwidget)
         self.roundLabel.setObjectName(u"roundLabel")

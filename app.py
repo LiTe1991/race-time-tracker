@@ -42,7 +42,7 @@ class MainWindow(QMainWindow):
         self.ui.action_set_min_round_time.triggered.connect(self.show_min_round_time_input_dialog)
 
         self.model = QStandardItemModel()
-        self.ui.listView.setModel(self.model)
+        self.ui.roundList.setModel(self.model)
 
         self.set_rounds_in_label()
 
