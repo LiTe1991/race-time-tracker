@@ -1,17 +1,18 @@
 """
     The main application which is used during start proc etc.
 """
-import os
 import sys
 
 from datetime import datetime, timezone
 
 from PySide6.QtCore import Slot
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PySide6.QtGui import QStandardItemModel, QStandardItem
+from PySide6.QtWidgets import QApplication, QMainWindow, QInputDialog
+
 from gpiozero import MotionSensor, RGBLED
 
 from view import RaceView as raceView
-from logic import race_timer
+from logic import race_timer, race
 from dto import constants
 
 
@@ -30,14 +31,20 @@ class MainWindow(QMainWindow):
         self.ui.actionButton.released.connect(self.trigger_timer_action)
         self.ui.actionButton.setChecked(self.button_is_checked)
 
-        # Updater and Timer
-        self.actual_time = None  # TODO: Move properties to own class? # pylint: disable=fixme
-        self.start_time = None
-        self.measured_round_times = []
-        self.rounds_to_drive = 1  # TODO: Set over input field # pylint: disable=fixme
+        self.race = race.Race()
 
+        # Updater and Timer
         self.updater = race_timer.Updater()
-        self.updater.worker.update_progress.measured_time.connect(self.update_number)
+        self.updater.worker.update_progress.measured_time.connect(self.update_time)
+
+        self.ui.action_set_rounds.triggered.connect(self.show_rounds_input_dialog)
+        self.ui.action_set_sensitivity.triggered.connect(self.show_sensitivity_input_dialog)
+        self.ui.action_set_min_round_time.triggered.connect(self.show_min_round_time_input_dialog)
+
+        self.model = QStandardItemModel()
+        self.ui.roundList.setModel(self.model)
+
+        self.set_rounds_in_label()
 
         self.gpio = MotionSensor(constants.MOTION_SENSOR_PIN, queue_len=constants.MOTION_SENSOR_QUEUE_LENGTH)
         self.led = RGBLED(red=constants.LED_STRIP_RED_PIN, green=constants.LED_STRIP_GREEN_PIN,
@@ -47,15 +54,16 @@ class MainWindow(QMainWindow):
         """
         Trigger the action for timer, make timer ready or abort proc
         """
-        if self.button_is_checked:
-            self.bal(constants.BUTTON_TEXT_GO, not self.button_is_checked, constants.LIGHT_RED, None)
-            self.reset_race_time_tracking()
-        else:
-            self.bal(constants.BUTTON_TEXT_STOP, not self.button_is_checked, constants.LIGHT_GREEN, self.trigger_start_timer)
+        self.reset_race_time_tracking()
 
-    def bal(self, button_text, button_checked, light_color, motion_action):
+        if self.button_is_checked:
+            self.switch_button_action(constants.BUTTON_TEXT_GO, not self.button_is_checked, constants.LIGHT_RED, None)
+        else:
+            self.switch_button_action(constants.BUTTON_TEXT_STOP, not self.button_is_checked, constants.LIGHT_GREEN, self.trigger_start_timer)
+
+    def switch_button_action(self, button_text, button_checked, light_color, motion_action):
         """
-        Switch button between ready and stop state
+        Switch button between ready and stop state.
         :param button_text: Text to show in the button
         :param button_checked: Set if button is checked or unchecked
         :param light_color: Color for traffic light
@@ -71,7 +79,9 @@ class MainWindow(QMainWindow):
         Stop the time tracking proc and reset all values
         """
         self.stop_race_timer()
-        self.set_time_values(None, None)
+        self.race.reset_race()
+        self.set_rounds_in_label()
+        self.model.clear()
         self.ui.timeLabel.setText(constants.LABEL_TIMER_DEFAULT)
 
     def trigger_start_timer(self):
@@ -79,40 +89,32 @@ class MainWindow(QMainWindow):
         Trigger the action for timer, make timer ready or abort proc
         """
         self.led.value = constants.LIGHT_NO
-        self.set_time_values(datetime.now(timezone.utc), 0)
+        self.race.set_time_values(datetime.now(timezone.utc), 0)
+        self.race.actual_round = 1
+        self.set_rounds_in_label()
         self.updater.start()
-        self.gpio.when_motion = self.take_round_of_finish_race
+        self.gpio.when_motion = self.take_round_or_finish_race
 
-    def take_round_of_finish_race(self):
+    def take_round_or_finish_race(self):
         """
         Define the workflow to take round time or stop race.
         """
-        if self.actual_time.total_seconds() < constants.TIMER_MINIMAL_RUNNING_TIME_SEC:
+        if not self.race.min_round_time_reached():
             print("Not yet")
             return
 
-        race_finished = len(self.measured_round_times) == (self.rounds_to_drive - 1)
-        if race_finished:
-            self.stop_race_timer()
-
-        accurate_mode = os.getenv("ACCURATE_MODE", "0")  # TODO: Set over input field # pylint: disable=fixme
-        if accurate_mode.isdigit() and int(accurate_mode) == 1:
-            print('Use ACCURATE_MODE')
-            self.update_stopwatch_time(datetime.now(timezone.utc))
-
-        self.measured_round_times.append(self.actual_time)
-        self.set_time_values(datetime.now(timezone.utc), None)
-        self.ui.timeLabel.setText(constants.LABEL_TIMER_DEFAULT)
-
-        if race_finished:
-            self.bal(constants.BUTTON_TEXT_GO, False, constants.LIGHT_RED, None)
-
-        print(str(self.measured_round_times))
-
-        if race_finished:
+        if self.race.is_race_finished():
             print("Race finished")
-            # TODO: Show final view with results and highlight best round # pylint: disable=fixme
-            #self.show_result_window()
+            self.stop_race_timer()
+            self.race.append_round_to_race()
+            self.add_round_time_to_list()
+            self.switch_button_action(constants.BUTTON_TEXT_GO, False, constants.LIGHT_RED, None)
+            print(str(self.race.measured_round_times))
+            return
+
+        self.race.append_round_to_race()
+        self.set_rounds_in_label()
+        self.add_round_time_to_list()
 
     def stop_race_timer(self):
         """
@@ -121,46 +123,98 @@ class MainWindow(QMainWindow):
         self.updater.quit()
         self.updater.wait()
 
-    def set_time_values(self, start_time, actual_time):
+    def set_rounds_in_label(self):
         """
-        Set time values to desire values
-        :param start_time: New value for class parameter start_time
-        :param actual_time: New value for class parameter actual_time
+        Update the rounds label and set the max rounds and actual_round
         """
-        self.start_time = start_time
-        self.actual_time = actual_time
+        self.ui.roundLabel.setText(constants.LABEL_ROUND_COUNTER.replace("{str}", str(self.race.actual_round)).replace("{end}", str(self.race.rounds_to_drive)))
+
+    def add_round_time_to_list(self):
+        """
+        Add last round time to list view
+        """
+        self.model.appendRow(QStandardItem(constants.LABEL_ROUND_TIME.replace("{rnd}", str(self.race.actual_round - 1)).replace("{time}", str(self.race.measured_round_times[len(self.race.measured_round_times) - 1]))))
 
     def update_stopwatch_time(self, time: datetime):
         """
-        Update the timer label and set actual measured time
+            Test
+        :param time:
         """
-        self.actual_time = time - self.start_time
-        self.ui.timeLabel.setText(str(self.actual_time))
-
-    def show_result_window(self):
-        """
-        Not working at the moment
-        """
-        tex = ""
-
-        for x in self.measured_round_times:
-            tex += "<h1>" + str(x) + "</h1></br>"
-
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.NoIcon)
-        msg_box.setWindowTitle("Ergebnis")
-        msg_box.setStandardButtons(QMessageBox.Ok)
-        msg_box.setText(tex)
-        res = msg_box.exec()
-        print(str(res))
+        self.race.update_actual_time(time)
+        self.ui.timeLabel.setText(str(self.race.actual_time))
 
     @Slot(datetime)
-    def update_number(self, val):
+    def update_time(self, val):
         """
         Slot which receive the signal from timer worker.
         :param val: The measured time.
         """
         self.update_stopwatch_time(val)
+
+    def show_rounds_input_dialog(self):
+        """
+        Show an input dialog to set the rounds to drive
+        """
+        test = QInputDialog()
+        test.setWindowTitle("Runden konfigurieren")
+        test.setLabelText("Bitte Rundenanzahl eingeben:")
+        test.setInputMode(QInputDialog.InputMode.IntInput)
+        test.setIntMinimum(1)
+        test.setIntMaximum(10)
+        test.setIntValue(self.race.rounds_to_drive)
+        test.intValueSelected.connect(self.update_rounds_to_drive)
+        test.exec()
+
+    def show_sensitivity_input_dialog(self):
+        """
+        Show an input dialog to set the sensitivity of motion sensor
+        """
+        test = QInputDialog()
+        test.setWindowTitle("Empfindlichkeit konfigurieren")
+        test.setLabelText("Bitte Empfindlichkeit eingeben:")
+        test.setInputMode(QInputDialog.InputMode.IntInput)
+        test.setIntMinimum(1)
+        test.setIntMaximum(20)
+        test.setIntValue(constants.MOTION_SENSOR_QUEUE_LENGTH)
+        test.intValueSelected.connect(self.update_sensitivity_queue_length)
+        test.exec()
+
+    def show_min_round_time_input_dialog(self):
+        """
+        Show an input dialog to set the sensitivity of motion sensor
+        """
+        test = QInputDialog()
+        test.setWindowTitle("Min. Rundenzeit konfigurieren")
+        test.setLabelText("Bitte minimale Rundenzeit eingeben:")
+        test.setInputMode(QInputDialog.InputMode.IntInput)
+        test.setIntMinimum(1)
+        test.setIntMaximum(30)
+        test.setIntValue(self.race.min_round_time)
+        test.intValueSelected.connect(self.update_min_round_time)
+        test.exec()
+
+    def update_rounds_to_drive(self, val1):
+        """
+        Signal action to update rounds from settings
+        :param val1: Number of rounds
+        """
+        self.race.rounds_to_drive = val1
+        self.set_rounds_in_label()
+
+    def update_sensitivity_queue_length(self, val1):
+        """
+        Signal action to update sensitivity over queue length from settings
+        :param val1: Number of queue length
+        """
+        self.gpio.close()
+        self.gpio = MotionSensor(constants.MOTION_SENSOR_PIN, queue_len=val1)
+
+    def update_min_round_time(self, val1):
+        """
+        Signal action to update min time per rounds from settings
+        :param val1: Number of rounds
+        """
+        self.race.min_round_time = val1
 
 
 if __name__ == '__main__':
