@@ -1,6 +1,6 @@
 [project]
 name = "RaceTimeTracker"
-version = "1.0.0"
+dynamic = ["version"]
 dependencies = [
     "PySide6",
     "gpiozero"
@@ -11,6 +11,17 @@ authors = [
 ]
 description = "Timer tracker for racing"
 readme = "README.md"
+
+[build-system]
+requires = [
+    "setuptools >= 65",
+    "setuptools_scm[toml]",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+write_to = "_version.py"
 
 [tool.setuptools]
  py-modules = ["view", "logic"]
